@@ -1,0 +1,29 @@
+version: "3.9"
+
+networks:
+  objetivo-metaway-network:
+    driver: bridge
+
+services:
+  objetivo-metaway-mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3308:3306"
+    networks:
+      - objetivo-metaway-network
+
+  objetivo-metaway-api:
+    build: .
+    command: ["/wait-for-it.sh", "objetivo-metaway-mysql:3308", "-t", "30", "--", "java", "-jar", "api.jar"]
+    environment:
+      DB_HOST: objetivo-metaway-mysql
+    ports:
+      - "8080:8080"
+    networks:
+      - objetivo-metaway-network
+    depends_on:
+      - objetivo-metaway-mysql
+
+
