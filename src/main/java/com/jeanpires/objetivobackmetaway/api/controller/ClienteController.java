@@ -16,6 +16,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Objects;
 
 
 @RestController()
@@ -35,6 +37,14 @@ public class ClienteController {
     @Autowired
     private ClienteInputDisasembler clienteDisasembler;
 
+
+    @PreAuthorize("hasAuthority('CLIENTE')")
+    @GetMapping
+    public ResponseEntity<List<ClienteDto>> listar(@RequestParam String nome){
+        List<Cliente> clienteList = clienteService.buscarPorNome(nome);
+        List<ClienteDto> clientesDto = clienteAssembler.collectionToModel(clienteList);
+        return ResponseEntity.ok(clientesDto);
+    }
 
     @PreAuthorize("hasAuthority('CLIENTE')")
     @GetMapping(value = "/{id}")

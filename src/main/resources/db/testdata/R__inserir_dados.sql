@@ -38,18 +38,21 @@ INSERT INTO usuario_permissao (usuario_id, permissao_id) VALUES
                                                              (1, 2),
                                                              (2, 2);
 
-INSERT INTO cliente (nome, data_cadastro, cpf) VALUES ('Admin User', CURDATE(), '123.456.789-00');
+INSERT INTO cliente (id, nome, data_cadastro, cpf) VALUES (1, 'Admin User', CURDATE(), '12345678900'),
+                                                          (2, 'Cliente User', CURDATE(), '98765432100');
 
-INSERT INTO endereco (cliente_id, logradouro, cidade, bairro, complemento, tag) VALUES (1, 'Rua A, 123', 'Uberlandia', 'Centro', 'Apto 101', 'Residencial');
+INSERT INTO endereco (cliente_id, logradouro, cidade, bairro, complemento, tag) VALUES (1, 'Rua A, 123', 'Uberlandia', 'Centro', 'Apto 101', 'Residencial'),
+                                                                                       (2, 'Rua B, 321', 'Uberlandia', 'Centro', 'Apto 202', 'Residencial');
 
-INSERT INTO contato (cliente_id, tag, data_cadastro, tipo, valor) VALUES (1, 'Celular', CURDATE(), 'TELEFONE', '(11) 98765-4321');
+INSERT INTO contato (cliente_id, tag, data_cadastro, tipo, valor) VALUES (1, 'tag', CURDATE(), 'TELEFONE', '(34) 98765-4321'),
+                                                                         (2, 'tag', CURDATE(), 'EMAIL', 'cliente@metaway.com');
 
-INSERT INTO raca (descricao) VALUES
-                                 ('Labrador'),
-                                 ('Poodle');
+INSERT INTO raca (descricao) VALUES('Labrador'),
+                                   ('Poodle');
 
-INSERT INTO pet (cliente_id, raca_id, data_nascimento, nome) VALUES
-                                                                 (1, 1, '2020-05-10', 'Rex');
+INSERT INTO pet (cliente_id, raca_id, data_nascimento, nome) VALUES (1, 1, '2020-05-10', 'Rex'),
+                                                                    (2, 1, '2022-02-05', 'Bob');
+
 
 INSERT INTO atendimento (pet_id, descricao, valor, data) VALUES
                                                              (1, 'Banho e Tosa', 50.00, NOW());

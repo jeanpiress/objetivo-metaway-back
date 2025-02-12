@@ -12,6 +12,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ClienteService {
@@ -27,6 +30,11 @@ public class ClienteService {
             throw new AccessDeniedException("Usuario não corresponde ao cliente");
         }
         return repository.findById(id).
+                orElseThrow(() -> new EntidadeNaoEncontradaException("Cliente não encontrado"));
+    }
+
+    public Cliente buscarPorCpf(String cpf){
+        return repository.findByCpf(cpf).
                 orElseThrow(() -> new EntidadeNaoEncontradaException("Cliente não encontrado"));
     }
 
@@ -46,5 +54,18 @@ public class ClienteService {
         }
         cliente.setDataCadastro(LocalDate.now());
         return repository.save(cliente);
+    }
+
+    public List<Cliente> buscarPorNome(String nome) {
+        List<Cliente> clienteList = new ArrayList<>();
+        if(security.temAutorizacao("ADMIN")) {
+            clienteList = (Objects.nonNull(nome) && !nome.isBlank())
+                    ? repository.findByNome(nome)
+                    : repository.findAll();
+        }else {
+            Cliente cliente = buscarPorCpf(security.getUsuarioCpf());
+            clienteList.add(cliente);
+        }
+        return clienteList;
     }
 }

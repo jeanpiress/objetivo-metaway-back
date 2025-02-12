@@ -17,8 +17,8 @@ public class PetDto {
 
     @Schema(description = "Id do Pet", example = "1")
     private Long id;
-    private ClienteId cliente;
-    private RacaId raca;
+    private ClienteIdNomeDto cliente;
+    private RacaDto raca;
     @Schema(example = "2023-02-01")
     private LocalDate dataNascimento;
     @Schema(example = "Rex")

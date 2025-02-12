@@ -2,8 +2,10 @@ package com.jeanpires.objetivobackmetaway.api.controller;
 
 import com.jeanpires.objetivobackmetaway.api.converterDto.assembler.PetAssembler;
 import com.jeanpires.objetivobackmetaway.api.converterDto.disassembler.PetInputDisasembler;
+import com.jeanpires.objetivobackmetaway.api.dtos.ClienteDto;
 import com.jeanpires.objetivobackmetaway.api.dtos.PetDto;
 import com.jeanpires.objetivobackmetaway.api.inputs.PetInput;
+import com.jeanpires.objetivobackmetaway.domain.model.Cliente;
 import com.jeanpires.objetivobackmetaway.domain.model.Pet;
 import com.jeanpires.objetivobackmetaway.domain.repositories.PetsRepository;
 import com.jeanpires.objetivobackmetaway.domain.service.PetService;
@@ -16,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController()
@@ -35,6 +38,14 @@ public class PetController {
     @Autowired
     private PetInputDisasembler petDisasembler;
 
+
+    @PreAuthorize("hasAuthority('CLIENTE')")
+    @GetMapping
+    public ResponseEntity<List<PetDto>> listar(@RequestParam String nome){
+        List<Pet> pets = petService.buscarPorNome(nome);
+        List<PetDto> petsDto = petAssembler.collectionToModel(pets);
+        return ResponseEntity.ok(petsDto);
+    }
 
     @PreAuthorize("hasAuthority('CLIENTE')")
     @GetMapping(value = "/{id}")
